@@ -19,7 +19,7 @@ const damScore = {
 		}
 		damScore.dialog.showModal();
 		
-		damScore.dialog.innerText = '<p>採点データを取得しています</p>';
+		damScore.dialog.innerHTML = '<p>採点データを取得しています</p>';
 		
 		damScore.sendBody.user = {
 			damtomoId: damtomoId.value,
@@ -30,7 +30,7 @@ const damScore = {
 		damScore.sendBody.scoreList = [];
 		
 		for (let i = 1; i <= 40; i++) {
-			damScore.dialog.innerText = '<p>採点データを取得しています(' + i + '/' + damScore.pageCount + '</p>)';
+			damScore.dialog.innerHTML = '<p>採点データを取得しています(' + i + '/' + damScore.pageCount + ')</p>';
 			damScore.isProcessing = true;
 
 			const xhr = new XMLHttpRequest();
