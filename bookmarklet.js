@@ -1,13 +1,25 @@
 const damScore = {
 	isProcessing: false,
 	isFirst: true,
+	hasNext: true,
+	pageCount: 40,
 
 	attributeList: [],
 	scoreList: [],
 	sendBody: {},
 
+	dialog: null,
+
 	start: async () => {
 		const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
+		
+		if (damScore.dialog === null) {
+			damScore.dialog = document.createElement('dialog');
+			document.body.appendChild(damScore.dialog);
+		}
+		damScore.dialog.showModal();
+		
+		damScore.dialog.innerText = '<p>採点データを取得しています</p>';
 		
 		damScore.sendBody.user = {
 			damtomoId: damtomoId.value,
@@ -18,6 +30,7 @@ const damScore = {
 		damScore.sendBody.scoreList = [];
 		
 		for (let i = 1; i <= 40; i++) {
+			damScore.dialog.innerText = '<p>採点データを取得しています(' + i + '/' + damScore.pageCount + '</p>)';
 			damScore.isProcessing = true;
 
 			const xhr = new XMLHttpRequest();
@@ -47,57 +60,33 @@ const damScore = {
 						}
 
 						damScore.isProcessing = false;
+						
+						damScore.hasNext = doc.querySelector('data page').getAttribute('hasNext') === '1';
+						damScore.pageCount = Number(doc.querySelector('data page').getAttribute('pageCount'));
 					}
 				}
 			}
 			while (damScore.isProcessing) await sleep(100);
 
+			if (!damScore.hasNext) break;
 		}
+
+		damScore.dialog.innerHTML = '<p>DAMスコアサイトに採点データを送信しています</p>';
 
 		const xhr = new XMLHttpRequest();
 		xhr.open("POST", "https://damscore-back.to8823.workers.dev/api/set", true);
+		xhr.send(JSON.stringify(damScore.sendBody));
 
 		xhr.onreadystatechange = () => {
 			if (xhr.readyState === XMLHttpRequest.DONE) {
 				const status = xhr.status;
 				if (status === 0 || (status >= 200 && status < 400)) {
-					alert('Complete!');
+					damScore.dialog.innerHTML = '<p>送信が完了しました。</p><p>5秒後に画面更新を実施します</p>';
+					setTimeout(() => location.reload(), 5000);
 				}
 			}
 		};
 
-		xhr.send(JSON.stringify(damScore.sendBody));
-
-		/*
-		document.body.remove();
-		document.body = document.createElement('body');
-
-		document.body.innerText = JSON.stringify(damScore.sendBody);
-		*/
-
-		/*
-		const tableElem = document.createElement('table');
-
-		let headerElem = document.createElement('tr');
-		for (const att of damScore.attributeList) {
-			let e = document.createElement('th');
-			e.innerText = att;
-			headerElem.appendChild(e);
-		}
-		tableElem.appendChild(headerElem);
-
-		for (const score of damScore.sendBody.scoreList) {
-			let trElem = document.createElement('tr');
-			for (const att of damScore.attributeList) {
-				let tdElem = document.createElement('td');
-				tdElem.innerText = score[att];
-				trElem.appendChild(tdElem);
-			}
-			tableElem.appendChild(trElem);
-		}
-
-		document.body.appendChild(tableElem);
-		*/
 	}
 
 };
