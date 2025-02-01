@@ -19,11 +19,34 @@ const damScore = {
 		}
 		damScore.dialog.showModal();
 		
+		if (location.href !== 'https://www.clubdam.com/app/damtomo/MyPage.do' && location.href !== 'https://www.clubdam.com/app/damtomo/SP/MyPage.do') {
+			damScore.dialog.innerHTML = '<p>DAMともサイトのマイページにアクセスしてください</p>' + 
+					'<p>マイページでログインした状態でこちらのスクリプトを実行してください</p>';
+			await sleep(5000);
+			damScore.dialog.close();
+		}
+		
+		
 		damScore.dialog.innerHTML = '<p>採点データを取得しています</p>';
 		
+		let _damtomoId = null;
+		if (typeof damtomoId === 'undefined') {
+			_damtomoId = document.querySelector('#ProfileCommentDamtomoId').value;
+		} else {
+			_damtomoId = damtomoId.value;
+		}
+		
+		let _cdmCardNo = null;
+		if (typeof cdmCardNo === 'undefined') {
+			let url = new URL(document.querySelectorAll('.denmoku a')[1].href)
+			_cdmCardNo = url.searchParams.get('cdmCardNo');
+		} else {
+			_cdmCardNo = cdmCardNo[0].value;
+		}
+		
 		damScore.sendBody.user = {
-			damtomoId: damtomoId.value,
-			cdmCardNo: cdmCardNo[0].value,
+			damtomoId: _damtomoId,
+			cdmCardNo: _cdmCardNo,
 			name: document.querySelector('.profile-name strong').innerText
 		};
 		
@@ -34,7 +57,7 @@ const damScore = {
 			damScore.isProcessing = true;
 
 			const xhr = new XMLHttpRequest();
-			const url = 'https://www.clubdam.com/app/damtomo/scoring/GetScoringDxgListXML.do?cdmCardNo=' + cdmCardNo[0].value + '&cdmToken=' + cdmToken.value + '&enc=utf8&pageNo=' + i + '&detailFlg=1&dxgType=1&UTCserial=' + new Date().getTime();
+			const url = 'https://www.clubdam.com/app/damtomo/scoring/GetScoringDxgListXML.do?cdmCardNo=' + _cdmCardNo + /*'&cdmToken=' + cdmToken.value + */ '&enc=utf8&pageNo=' + i + '&detailFlg=1&dxgType=1&UTCserial=' + new Date().getTime();
 			xhr.open("GET", url);
 			xhr.send();
 
