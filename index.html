@@ -60,7 +60,7 @@
 	<body>
 		<h1>DAMスコア</h1>
 
-		<p><a href="javascript:(()=>{let s=document.createElement('script');s.src='https://itakolove.github.io/damScore/bookmarklet.js?time='+new Date().getTime();document.body.appendChild(s);})();">こちらをブックマークにD&D</a></p>
+		<p><a href="javascript:(()=>{let id='damscore_script';if(document.querySelector('#'+id)===null){let s=document.createElement('script');s.id=id;s.src='https://itakolove.github.io/damScore/bookmarklet.js?time='+new Date().getTime();s.onload=()=>damScore.start();document.body.appendChild(s);}else{damScore.start();}})();">こちらをブックマークにD&D</a></p>
 		
 		<div id="list1">
 		</div>
