@@ -113,4 +113,3 @@ const damScore = {
 	}
 
 };
-damScore.start();
