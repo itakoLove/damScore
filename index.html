@@ -18,51 +18,85 @@
 						const userList = JSON.parse(xhr.responseText);
 
 						const ce = a => document.createElement(a);
-						let tableElem = ce('table');
-						
-						let headerItems = [];
-						headerItems = headerItems.concat(['名前', 'リンク', 'DAMとものリンク']);
-						
-						let headerElem = ce('tr');
-						for (let headerItem of headerItems) {
-							let headerItemElem = ce('th');
-							headerItemElem.innerText = headerItem;
-							headerElem.appendChild(headerItemElem);
-						}
-						tableElem.appendChild(headerElem);
+						let tableElem = document.querySelector('#table1 tbody');
 
 						for (let user of userList) {
 							let userElem = ce('tr');
 							
+							let imgTdElem = ce('td');
+							let imgElem = ce('div');
+							imgElem.style.backgroundImage = 'url(https://www.clubdam.com/app/contents/prof/user_images/4/' + user.damtomoId + '.jpg?time=' + new Date().getTime() + ')';
+							imgElem.className = 'frame';
+							imgTdElem.appendChild(imgElem);
+							userElem.appendChild(imgTdElem);
+							
 							let nameElem = ce('td');
 							nameElem.innerText = user.name;
 							userElem.appendChild(nameElem);
+							//let nameElem = ce('label');
+							//nameElem.innerText = user.name;
+							//imgTdElem.appendChild(nameElem);
 							
+							let countElem = ce('td');
+							countElem.innerText = user.count;
+							countElem.className = 'right';
+							userElem.appendChild(countElem);
+
+							let maxTotalPointsElem = ce('td');
+							maxTotalPointsElem.innerText = (user.maxTotalPoints/1000).toFixed(3);
+							maxTotalPointsElem.className = 'right';
+							userElem.appendChild(maxTotalPointsElem);
+
+							//maxScoringDateTime
+							let maxScoringDateTimeElem = ce('td');
+							let msdt = user.maxScoringDateTime;
+							maxScoringDateTimeElem.innerText = msdt.substr(0,4) + '/' + msdt.substr(4,2) + '/' + msdt.substr(6,2) + ' ' + msdt.substr(8,2) + ':' + msdt.substr(10,2) + ':' + msdt.substr(12,2);
+							maxScoringDateTimeElem.className = 'datetime';
+							userElem.appendChild(maxScoringDateTimeElem);
+
+
 							let linkElem = ce('td');
-							linkElem.innerHTML = '<a href="score.html?clubdamcardno=' + user.cdmCardNo + '">リンク</a>';
-							userElem.appendChild(linkElem);
+							let scoreListElem = ce('a');
+							scoreListElem.href = 'score.html?clubdamcardno=' + user.cdmCardNo;
+							scoreListElem.innerText = '採点一覧を見る';
+							linkElem.appendChild(scoreListElem);
 							
-							let damtomoLinkElem = ce('td');
-							damtomoLinkElem.innerHTML = '<a href="https://www.clubdam.com/app/damtomo/member/info/Profile.do?damtomoId=' + user.damtomoId + '" target="_blank">リンク</a>';
-							userElem.appendChild(damtomoLinkElem);
+							linkElem.appendChild(ce('br'));
+							
+							let damtomoLinkElem = ce('a');
+							damtomoLinkElem.href = 'https://www.clubdam.com/app/damtomo/member/info/Profile.do?damtomoId=' + user.damtomoId;
+							damtomoLinkElem.target = 'blank';
+							damtomoLinkElem.innerText = 'DAMともを見る';
+							linkElem.appendChild(damtomoLinkElem);
+
+							userElem.appendChild(linkElem);
 							
 							tableElem.appendChild(userElem);
 						}
 						
-						document.querySelector('#list1').appendChild(tableElem);
+						// document.querySelector('#list1').appendChild(tableElem);
 
 					}
 				}
 			}
 
 		</script>
+		<link href="main.css" rel="stylesheet" />
+		<link href="index.css" rel="stylesheet" />
 	</head>
 	<body>
 		<h1>DAMスコア</h1>
 
 		<p><a href="javascript:(()=>{let id='damscore_script';if(document.querySelector('#'+id)===null){let s=document.createElement('script');s.id=id;s.src='https://itakolove.github.io/damScore/bookmarklet.js?time='+new Date().getTime();s.onload=()=>damScore.start();document.body.appendChild(s);}else{damScore.start();}})();">こちらをブックマークにD&D</a></p>
 		
-		<div id="list1">
-		</div>
+		<table id="table1">
+			<tr>
+				<th colspan="2">名前</th>
+				<th>採点回数</th>
+				<th>最高得点</th>
+				<th>最後に歌った日時</th>
+				<th>リンク</th>
+			</tr>
+		</table>
 	</body>
 </html>

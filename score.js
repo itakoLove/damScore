@@ -1,3 +1,5 @@
+const ARTIST_MAX_LENGTH = 35;
+
 const qs = a => document.querySelector(a);
 var load = () => {
 	const url = new URL(location.href);
@@ -27,12 +29,23 @@ var load = () => {
 					
 					let headerItems = [];
 					if (!isFilteredByUser) headerItems.push('歌唱者');
-					headerItems = headerItems.concat(['曲名', 'アーティスト名', '総合得点', '音程正確率', '安定性点数', '表現点数', 'ビブラート＆ロングトーン点数', 'リズム点数', '採点日時']);
+					headerItems = headerItems.concat([
+							{value:'曲名'},
+							{value:'アーティスト名'},
+							{value:'総合得点'},
+							{value:'音程正確率'},
+							{value:'安定性点数'},
+							{value:'表現点数'},
+							{value:'ビブラート＆ロングトーン点数'},
+							{value:'リズム点数'},
+							{value:'採点日時', className:'datetime'}
+					]);
 					
 					let headerElem = ce('tr');
 					for (let headerItem of headerItems) {
 						let headerItemElem = ce('th');
-						headerItemElem.innerText = headerItem;
+						headerItemElem.innerText = headerItem.value;
+						if (headerItem.className) headerItemElem.className = headerItem.className;
 						headerElem.appendChild(headerItemElem);
 					}
 					tableElem.appendChild(headerElem);
@@ -41,8 +54,8 @@ var load = () => {
 					for (let score of scoreList) {
 						let scoreElem = ce('tr');
 						
-						let artistName = score.artistName.substr(0,40);
-						if (score.artistName.length > 40) artistName += '(ry';
+						let artistName = score.artistName.substr(0,ARTIST_MAX_LENGTH);
+						if (score.artistName.length > ARTIST_MAX_LENGTH) artistName += '(ry';
 						
 						let totalPoints = (score.totalPoints / 1000).toFixed(3);
 
@@ -51,11 +64,22 @@ var load = () => {
 
 						let dataItems = [];
 						if (!isFilteredByUser) dataItems.push(score.name);
-						dataItems = dataItems.concat([score.contentsName, artistName, totalPoints, score.radarChartPitch, score.radarChartStability, score.radarChartExpressive, score.radarChartVibratoLongtone, score.radarChartRhythm, scoringDateTime]);
+						dataItems = dataItems.concat([
+								{value:score.contentsName},
+								{value:artistName},
+								{value:totalPoints, className:'right'},
+								{value:score.radarChartPitch, className:'right'},
+								{value:score.radarChartStability, className:'right'},
+								{value:score.radarChartExpressive, className:'right'},
+								{value:score.radarChartVibratoLongtone, className:'right'},
+								{value:score.radarChartRhythm, className:'right'},
+								{value:scoringDateTime}
+						]);
 						
 						for (let dataItem of dataItems) {
 							let dataItemElem = ce('td');
-							dataItemElem.innerText = dataItem;
+							dataItemElem.innerText = dataItem.value;
+							if (dataItem.className) dataItemElem.className = dataItem.className;
 							scoreElem.appendChild(dataItemElem);
 						}
 
@@ -74,12 +98,20 @@ var load = () => {
 					
 					let headerItems = [];
 					if (!isFilteredByUser) headerItems.push('歌唱者');
-					headerItems = headerItems.concat(['曲名', 'アーティスト名', '平均点', '最高点', '回数', '最後に歌った日時']);
+					headerItems = headerItems.concat([
+							{value:'曲名'},
+							{value:'アーティスト名'},
+							{value:'平均点'},
+							{value:'最高点'},
+							{value:'回数'},
+							{value:'最後に歌った日時', className:'datetime'}
+					]);
 					
 					let headerElem = ce('tr');
 					for (let headerItem of headerItems) {
 						let headerItemElem = ce('th');
-						headerItemElem.innerText = headerItem;
+						headerItemElem.innerText = headerItem.value;
+						if (headerItem.className) headerItemElem.className = headerItem.className;
 						headerElem.appendChild(headerItemElem);
 					}
 					tableElem.appendChild(headerElem);
@@ -87,8 +119,8 @@ var load = () => {
 					for (let request of requestNoList) {
 						let scoreElem = ce('tr');
 						
-						let artistName = request.artistName.substr(0,40);
-						if (request.artistName.length > 40) artistName += '(ry';
+						let artistName = request.artistName.substr(0,ARTIST_MAX_LENGTH);
+						if (request.artistName.length > ARTIST_MAX_LENGTH) artistName += '(ry';
 
 						let targetSongScoreList = scoreList.filter(x => x.clubDamCardNo === request.clubDamCardNo && x.requestNo === request.requestNo);
 						
@@ -101,11 +133,19 @@ var load = () => {
 
 						let dataItems = [];
 						if (!isFilteredByUser) dataItems.push(request.name);
-						dataItems = dataItems.concat([request.contentsName, artistName, avePoint, maxPoint, count, scoringDateTime]);
+						dataItems = dataItems.concat([
+								{value:request.contentsName},
+								{value:artistName},
+								{value:avePoint, className:'right'},
+								{value:maxPoint, className:'right'},
+								{value:count, className:'right'},
+								{value:scoringDateTime}
+						]);
 						
 						for (let dataItem of dataItems) {
 							let dataItemElem = ce('td');
-							dataItemElem.innerText = dataItem;
+							dataItemElem.innerText = dataItem.value;
+							if (dataItem.className) dataItemElem.className = dataItem.className;
 							scoreElem.appendChild(dataItemElem);
 						}
 
@@ -116,17 +156,6 @@ var load = () => {
 				}
 				
 			}
-		}
-	}
-};
-
-var clickButton = e => {
-	let id = e.srcElement.getAttribute('_target');
-	for (let elem of document.querySelectorAll('#list_area div')) {
-		if (elem.id === id) {
-			elem.style.display = 'block';
-		} else {
-			elem.style.display = 'none';
 		}
 	}
 };

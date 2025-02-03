@@ -1,0 +1,14 @@
+.frame {
+	position: relative;
+	display: inline-block;
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.datetime {
+	width: 180px;
+}
