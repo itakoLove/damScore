@@ -85,7 +85,9 @@
 		<link href="index.css" rel="stylesheet" />
 	</head>
 	<body>
-		<h1>DAMスコア</h1>
+		<div class="footer">
+			<h1><a href="./" >DAMスコア</a></h1>
+		</div>
 
 		<h2 class="heading-31">登録ユーザー一覧</h2>
 		<table id="table1">
@@ -101,12 +103,23 @@
 		<div>
 			<h2 class="heading-31">使い方</h2>
 			
-			<p>１．<a href="javascript:(()=>{let id='damscore_script';if(document.querySelector('#'+id)===null){let s=document.createElement('script');s.id=id;s.src='https://itakolove.github.io/damScore/bookmarklet.js?time='+new Date().getTime();s.onload=()=>damScore.start();document.body.appendChild(s);}else{damScore.start();}})();">こちらのリンク</a>をブックマークバーにD&Dします。こちらは最初の一回だけ実施すればOKです</p>
-			<p>２．<a href="https://www.clubdam.com/app/damtomo/top/Index.do" target="_blank">DAM★ともサイト</a>にアクセスします</p>
-			<p>３．DAM★ともIDでログインします</p>
-			<p>４．<a href="https://www.clubdam.com/app/damtomo/MyPage.do" target="_blank">マイページ</a>にアクセスします</p>
-			<p>５．１で作成したブックマークを実行します</p>
-			<p>６．「送信が完了しました」とメッセージが表示されたら登録完了です</p>
+			<ol>
+				<li><a href="javascript:(()=>{let id='damscore_script';if(document.querySelector('#'+id)===null){let s=document.createElement('script');s.id=id;s.src='https://https://damscore.pages.dev/bookmarklet.js?time='+new Date().getTime();s.onload=()=>damScore.start();document.body.appendChild(s);}else{damScore.start();}})();">こちらのリンク</a>をブックマークバーにD&Dします。こちらは最初の一回だけ実施すればOKです</li>
+				<li><a href="https://www.clubdam.com/app/damtomo/top/Index.do" target="_blank">DAM★ともサイト</a>にアクセスします</li>
+				<li>DAM★ともIDでログインします</li>
+				<li><a href="https://www.clubdam.com/app/damtomo/MyPage.do" target="_blank">マイページ</a>にアクセスします</li>
+				<li>１で作成したブックマークを実行します</li>
+				<li>「送信が完了しました」とメッセージが表示されたら登録完了です</li>
+			</ol>
+		</div>
+
+		<div>
+			<h2 class="heading-31">注意事項</h2>
+			
+			<ul>
+				<li>取得対象は精密採点DX-Gのみとなっています。他の採点については検討中です</li>
+				<li>DAMスコアに登録されたデータは削除できません。削除したい場合は<a href="https://x.com/itako_love" target="_blank">管理者</a>にお問い合わせください</li>
+			</ul>
 		</div>
 
 	</body>
